@@ -1,22 +1,39 @@
+'use client'
 import Image from "next/image"
 import Navbar from "@/components/Navbar"
+import { useEffect, useRef } from 'react'
 
 export default function Home() {
+  const bgRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+  const handleScroll = () => {
+    if (bgRef.current) {
+      // 0.4 = velocidade do parallax (0 = parado, 1 = normal)
+      bgRef.current.style.transform = `translateY(${window.scrollY * 0.4}px)`
+    }
+  }
+
+  window.addEventListener('scroll', handleScroll)
+  return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   return (
     <>
-      
-      <section className="relative min-h-screen">
-        <Image
-          src={'/plants-bg.png'}
-          alt="background"
-          fill
-          className="object-cover -z-10"
-        />
-
-        <Navbar />
+      <Navbar />
+      <section className="relative min-h-screen -mt-16 overflow-hidden">
+        {/* Wrapper da imagem com ref para o parallax */}
+        <div ref={bgRef} className="absolute inset-0 -z-10 will-change-transform">
+          <Image
+            src={'/plants-bg.png'}
+            alt="background"
+            fill
+            className="object-cover"
+          />
+        </div>
 
         {/* Container centralizado */}
-        <div className="flex justify-center items-center min-h-[calc(100vh-64px)]">
+        <div className="flex justify-center items-center pt-16">
           <div className="flex flex-col gap-4 max-w-90">
             <Image
               src={'/maia-logo.png'}
@@ -61,6 +78,8 @@ export default function Home() {
         <hr className="text-gray-300 ml-24 mr-24 h-1 mt-6" />
      </section>
 
+     {/* SERVICES SECTION */}
+
      <section className="mt-20 ml-30 mr-30 flex flex-col items-center gap-26">
 
       <h2 className="text-3xl text-gray-800 tracking-widest"><span>•</span> Serviços <span>•</span></h2>
@@ -89,43 +108,76 @@ export default function Home() {
           </ul>
         </div>
 
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-8 justify-center items-center">
           <Image
-            src={'/home-laudo.webp'} 
+            src={'/home-arvores.webp'} 
             alt=""
             width={900}
             height={900}
             className="rounded-full object-cover w-46 h-46 outline outline-black outline-offset-6"
           />
 
-          <h3 className="text-black text-sm font-bold">Laudos, Documentação e Regularização</h3>
-          <p className="text-xs">Serviços voltados à segurança jurídica e atendimento às exigências legais</p>
+          <h3 className="text-black text-sm font-bold text-center">Arborização Urbana e Manejo Arbóreo</h3>
+
+          <p className="text-xs text-center">Serviços relacionados à saúde, segurança e planejamento das árvores</p>
+
+          <ul className="text-xs flex flex-col gap-2">
+            <li className="flex gap-2"><span>•</span>Avaliação fitossanitária</li>
+            <li className="flex gap-2"><span>•</span>Manejo arbóreo (poda, adequação e acompanhamento técnico)</li>
+            <li className="flex gap-2"><span>•</span>Inventário arbóreo</li>
+            <li className="flex gap-2"><span>•</span>Plano de manejo arbóreo</li>
+            <li className="flex gap-2"><span>•</span>
+            Gestão de projetos de arborização urbana
+            </li>
+            <li className="flex gap-2"><span>•</span>Diagnóstico de risco arbóreo</li>
+          </ul>
         </div>
 
-                <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-8 justify-center items-center">
           <Image
-            src={'/home-laudo.webp'} 
+            src={'/home-consultoria.jpg'} 
             alt=""
             width={900}
             height={900}
             className="rounded-full object-cover w-46 h-46 outline outline-black outline-offset-6"
           />
 
-          <h3 className="text-black text-sm font-bold">Laudos, Documentação e Regularização</h3>
-          <p className="text-xs">Serviços voltados à segurança jurídica e atendimento às exigências legais</p>
+          <h3 className="text-black text-sm font-bold text-center">Consultoria, Planejamento e Projetos Ambientais</h3>
+
+          <p className="text-xs text-center">Serviços estratégicos para viabilização de projetos e tomada de decisão</p>
+
+          <ul className="text-xs flex flex-col gap-2">
+            <li className="flex gap-2"><span>•</span>Consultoria ambiental</li>
+            <li className="flex gap-2"><span>•</span>Avaliação e mitigação de impactos ambientais</li>
+            <li className="flex gap-2"><span>•</span>Planejamento ambiental para empreendimentos
+            </li>
+            <li className="flex gap-2"><span>•</span>Acompanhamento técnico de obras</li>
+            <li className="flex gap-2"><span>•</span>Planos de compensação ambiental</li>
+            <li className="flex gap-2"><span>•</span>Projetos de paisagismo sustentável</li>
+          </ul>
         </div>
 
-                <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-8 justify-center items-center">
           <Image
-            src={'/home-laudo.webp'} 
+            src={'/home-muda.jpg'} 
             alt=""
             width={900}
             height={900}
             className="rounded-full object-cover w-46 h-46 outline outline-black outline-offset-6"
           />
 
-          <h3 className="text-black text-sm font-bold">Laudos, Documentação e Regularização</h3>
-          <p className="text-xs">Serviços voltados à segurança jurídica e atendimento às exigências legais</p>
+          <h3 className="text-black text-sm font-bold text-center">Sustentabilidade, Educação e Soluções Verdes</h3>
+
+          <p className="text-xs text-center">Projetos educativos, voltados à sustentabilidade e soluções verdes</p>
+
+          <ul className="text-xs flex flex-col gap-2">
+            <li className="flex gap-2"><span>•</span>Projetos de hortas domésticas e urbanas
+            </li>
+            <li className="flex gap-2"><span>•</span>Hortas em condomínios, escolas e empresas</li>
+            <li className="flex gap-2"><span>•</span>Educação ambiental</li>
+            <li className="flex gap-2"><span>•</span>Projetos de integração entre pessoas e natureza</li>
+            <li className="flex gap-2"><span>•</span>Soluções verdes para espaços urbanos</li>
+          </ul>
         </div>
 
 

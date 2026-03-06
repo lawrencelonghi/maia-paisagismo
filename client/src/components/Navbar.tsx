@@ -3,19 +3,45 @@ import { useState, useEffect } from 'react'
 import { Search, X, Menu } from 'lucide-react';
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
+const [isOpen, setIsOpen] = useState(false)
+const [scrolled, setScrolled] = useState(false)
+const [visible, setVisible] = useState(true)
 
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20)
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+useEffect(() => {
+  let scrollTimer: ReturnType<typeof setTimeout>
+  let lastScrollY = window.scrollY
 
+  const handleScroll = () => {
+    const currentScrollY = window.scrollY
+    setScrolled(currentScrollY > 20)
+
+    if (currentScrollY > lastScrollY) {
+      setVisible(false)
+    } else {
+      setVisible(true)
+    }
+
+    lastScrollY = currentScrollY
+
+    clearTimeout(scrollTimer)
+    scrollTimer = setTimeout(() => {
+      setVisible(true)
+    }, 300)
+  }
+
+  window.addEventListener('scroll', handleScroll)
+  return () => {
+    window.removeEventListener('scroll', handleScroll)
+    clearTimeout(scrollTimer)
+  }
+}, [])
   return (
     <>
       {/* Wrapper externo: full width, recebe o bg */}
-      <div className={`sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'bg-neutral-900/90 backdrop-blur-sm' : ''}`}>
+      <div className={`sticky top-0 z-50 transition-all duration-300
+        ${scrolled ? 'bg-neutral-900/90 backdrop-blur-sm' : ''}
+        ${visible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}
+      `}>
         
         {/* Inner: responsável pelo padding horizontal */}
         <div className='flex justify-between items-center px-8 py-4 text-gray-200'>
